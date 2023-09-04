@@ -2,6 +2,7 @@ import './index.scss';
 import LateralMenu from '../components/menuComponente/index.js';
 import Cabecalho from '../components/cabecalhoComponente/index.js';
 
+import lixeira from '../../assets/3844460-can-trash_110351.svg'
 import lupa from '../../assets/iconamoon_search-bold.png'
 import { useState, useEffect } from 'react';
 import axios from 'axios';
@@ -18,6 +19,8 @@ export default function CarsControl() {
     const [placaVeiculo, setPlacaVeiculo] = useState('')
 
     const [listarVeiculo, setListarVeiculo] = useState('')
+
+    const [idDeletado, setIdDeletado] = useState(0);
 
 
 
@@ -43,6 +46,8 @@ export default function CarsControl() {
 
     }
 
+    
+
 
     async function listarTipos() {
         let r = await axios.get('http://localhost:5000/tipo');
@@ -53,7 +58,15 @@ export default function CarsControl() {
     async function listarVeiculos() {
         let r = await axios.get('http://localhost:5000/veiculos/nmp?busca=' + listarVeiculo)
         setVeiculos(...[r.data])
+        console.log(veiculos)
 
+    }
+
+    async function deletarPorId(id){
+        setIdDeletado(id)
+        let r = await axios.delete('http://localhost:5000/veiculo/' + idDeletado)
+        listarVeiculos()
+        setIdDeletado(0)
     }
 
     return (
@@ -134,17 +147,18 @@ export default function CarsControl() {
                                     <th>Marca</th>
                                     <th>Ano</th>
                                     <th>Tipo</th>
-                                    <th>placa</th>
+                                    <th>Placa</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody className='linha'>
                                 {veiculos.map((item) => (
                                     <tr key={item.id}>
                                         <td>{item.modelo}</td>
                                         <td>{item.marca}</td>
                                         <td>{item.ano}</td>
                                         <td>{item.tipoVeiculo}</td>
-                                        <td>{item.placa}</td>
+                                        <td className='placa'>{item.placa}</td>
+                                        <img src={lixeira} onClick={() => deletarPorId(item.id)}/>
                                     </tr>
                                 ))}
                             </tbody>

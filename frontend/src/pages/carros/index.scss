@@ -76,6 +76,19 @@
 
         }
 
+        .linha{
+            img{
+                width: 20px;
+                height: 20px;
+                position: absolute;
+
+
+                &:hover{
+                    background-color: red;
+                }
+            }
+        }
+
         .Carrolista {
 
             table {
